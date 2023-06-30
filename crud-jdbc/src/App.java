@@ -1,26 +1,95 @@
 import java.sql.SQLException;
-
+import java.util.List;
 
 import javax.swing.JOptionPane;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import dao.CargoDAO;
 import dao.FuncionarioDAO;
+import models.Cargo;
 import models.Funcionario;
+import application.CargoApplication;
+import application.FuncionarioApplication;
 
-public class App {
-    public static void main(String[] args) throws SQLException {
+public class App extends JFrame implements ActionListener{
+    private JButton funcionariosButton;
+    private JButton cargosButton;
+    private JButton sairButton;
 
-        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    public App() {
+        setTitle("Menu Principal");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 200);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(3, 1));
+        setResizable(false);
+
+        // Define uma fonte personalizada para os botões
+        Font buttonFont = new Font("Arial", Font.BOLD, 16);
+
+        funcionariosButton = new JButton("Funcionários");
+        cargosButton = new JButton("Cargos");
+        sairButton = new JButton("Sair");
+
+        funcionariosButton.addActionListener(this);
+        cargosButton.addActionListener(this);
+        sairButton.addActionListener(this);
+
+        // Aplica a fonte personalizada aos botões
+        funcionariosButton.setFont(buttonFont);
+        cargosButton.setFont(buttonFont);
+        sairButton.setFont(buttonFont);
+
+        // Define uma cor de fundo personalizada para os botões
+        Color buttonBackgroundColor = new Color(220, 220, 220);
+        funcionariosButton.setBackground(buttonBackgroundColor);
+        cargosButton.setBackground(buttonBackgroundColor);
+        sairButton.setBackground(buttonBackgroundColor);
+
+        add(funcionariosButton);
+        add(cargosButton);
+        add(sairButton);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == funcionariosButton) {
+            FuncionarioApplication.exibirMenuFuncionario();
+        } else if (e.getSource() == cargosButton) {
+            CargoApplication.exibirMenuCargo();
+        } else if (e.getSource() == sairButton) {
+            JOptionPane.showMessageDialog(null, "Encerrando o programa...");
+            dispose(); // Fechar a janela
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                App menu = new App();
+                menu.setVisible(true);
+            }
+        });
+    }
+/*    public static void main(String[] args) throws SQLException {
         int opcao = 0;
-        do {
-            String escolha = JOptionPane.showInputDialog(
-                    "Menu de Funcionario\n\n" +
-                            "1. Adicionar Funcionario\n" +
-                            "2. Atualizar Funcionario\n" +
-                            "3. Excluir Funcionario\n" +
-                            "4. Visualizar Funcionario\n" +
-                            "5. Sair\n\n" +
-                            "Escolha uma opção:");
 
+        do {
+
+            String escolha = JOptionPane.showInputDialog(null,
+                    "Menu Principal\n\n" +
+                            "1. Funcionários\n" +
+                            "2. Cargos\n" +
+                            "3. Sair\n\n" +
+                            "Escolha uma opção:");
             if (escolha == null) {
                 // Usuário clicou em "Cancelar" ou fechou a janela
                 break;
@@ -35,94 +104,17 @@ public class App {
 
             switch (opcao) {
                 case 1:
-                    String nome = JOptionPane.showInputDialog("Digite o nome do funcionario:");
-                    String email = JOptionPane.showInputDialog("Digite o email do funcionario:");
-                    if (nome != null && !nome.isEmpty()) {
-                        int idade = 0;
-                        try {
-                            idade = Integer.parseInt(JOptionPane.showInputDialog("Digite a idade do funcionario:"));
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Idade inválida. Por favor, tente novamente.");
-                            continue;
-                        }
-
-                        Funcionario novoFuncionario = new Funcionario();
-                        novoFuncionario.setNome(nome);
-                        novoFuncionario.setIdade(idade);
-                        novoFuncionario.setEmail(email);
-
-                        funcionarioDAO.save(novoFuncionario);
-                        JOptionPane.showMessageDialog(null, "Funcionario adicionado com sucesso!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Nome inválido. Por favor, tente novamente.");
-                    }
+                    FuncionarioApplication.exibirMenuFuncionario();
                     break;
                 case 2:
-                    int id;
-                    try {
-                        id = Integer
-                                .parseInt(JOptionPane.showInputDialog("Digite o ID do funcionario a ser atualizado:"));
-                    } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(null, "ID inválido. Por favor, tente novamente.");
-                        continue;
-                    }
-
-                    String novoNome = JOptionPane.showInputDialog("Digite o novo nome do funcionario:");
-                    String novoEmail = JOptionPane.showInputDialog("Digite o novo email do funcionario:");
-                    if (novoNome != null && !novoNome.isEmpty()) {
-                        int novaIdade = 0;
-                        try {
-                            novaIdade = Integer
-                                    .parseInt(JOptionPane.showInputDialog("Digite a nova idade do funcionario:"));
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Idade inválida. Por favor, tente novamente.");
-                            continue;
-                        }
-
-                        Funcionario funcionarioActualizado = new Funcionario();
-                        funcionarioActualizado.setNome(novoNome);
-                        funcionarioActualizado.setEmail(novoEmail);
-                        funcionarioActualizado.setIdade(novaIdade);
-                        funcionarioActualizado.setId_func(id);
-
-                        funcionarioDAO.updateFuncionario(funcionarioActualizado);
-                        JOptionPane.showMessageDialog(null, "Funcionario atualizado com sucesso!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Nome inválido. Por favor, tente novamente.");
-                    }
+                    CargoApplication.exibirMenuCargo();
                     break;
                 case 3:
-                    int idExcluir;
-                    try {
-                        idExcluir = Integer
-                                .parseInt(JOptionPane.showInputDialog("Digite o ID do Funcionario a ser excluído:"));
-                    } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(null, "ID inválido. Por favor, tente novamente.");
-                        continue;
-                    }
-
-                    funcionarioDAO.deleteByID(idExcluir);
-                    JOptionPane.showMessageDialog(null, "Funcionario excluído com sucesso!");
-                    break;
-                case 4:
-                    StringBuilder listaFuncionario = new StringBuilder();
-                    for (Funcionario f : funcionarioDAO.findFuncionarios()) {
-                        listaFuncionario.append("ID: ").append(f.getId_func()).append("\n");
-                        listaFuncionario.append("Nome: ").append(f.getNome()).append("\n");
-                        listaFuncionario.append("Email: ").append(f.getEmail()).append("\n");
-                        listaFuncionario.append("Idade: ").append(f.getIdade()).append("\n");
-                        listaFuncionario.append("---------------------------------\n");
-                    }
-                    JOptionPane.showMessageDialog(null, listaFuncionario.toString(), "Lista de Funcionarios",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    break;
-                case 5:
                     JOptionPane.showMessageDialog(null, "Encerrando o programa...");
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Opção inválida. Por favor, tente novamente.");
             }
-        } while (opcao != 5);
-
-    }
+        } while (opcao != 3);
+    } */
 }

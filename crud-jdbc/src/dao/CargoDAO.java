@@ -17,13 +17,12 @@ public class CargoDAO {
 
         Connection conn = null;
         PreparedStatement pstm = null;
-        String sql = "INSERT INTO cargo(nome) VALUES(?)";
+        String sql = "INSERT INTO cargo(nome) VALUES(?) ";
 
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.setInt(1, cargo.getId_cargo());
-            pstm.setString(2, cargo.getNome());
+            pstm.setString(1, cargo.getNome());
             pstm.execute();
             System.out.println("Cargo salvo com sucesso!");
         } catch (SQLException e) {
@@ -51,8 +50,7 @@ public class CargoDAO {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             pstm.setString(1, cargo.getNome());
-
-            pstm.setInt(4, cargo.getId_cargo());
+            pstm.setInt(2, cargo.getId_cargo());
             pstm.execute();
             System.out.println("Cargo atualizado com sucesso!");
         } catch (SQLException e) {
@@ -160,7 +158,7 @@ public class CargoDAO {
     public void deleteByID(int id_cargo) {
         Connection conn = null;
         PreparedStatement pstm = null;
-        String sql = "DELETE from cargo WHERE id_func = ?;";
+        String sql = "DELETE from cargo WHERE id_cargo = ?";
 
         try {
             conn = ConnectionFactory.createConnectionToMySQL();

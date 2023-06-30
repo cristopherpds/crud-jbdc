@@ -16,7 +16,7 @@ public class FuncionarioDAO {
 
 		Connection conn = null;
 		PreparedStatement pstm = null;
-		String sql = "INSERT INTO funcionario(nome, email, idade) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO funcionario(nome, email, idade, id_cargo) VALUES (?, ?, ?, ?) ";
 
 		try {
 			conn = ConnectionFactory.createConnectionToMySQL();
@@ -24,6 +24,7 @@ public class FuncionarioDAO {
 			pstm.setString(1, funcionario.getNome());
 			pstm.setString(2, funcionario.getEmail());
 			pstm.setInt(3,funcionario.getIdade());
+			pstm.setInt(4, funcionario.getId_cargo());
 			pstm.execute();
 			System.out.println("Funcionario salvo com sucesso!");
 		} catch (SQLException e) {
