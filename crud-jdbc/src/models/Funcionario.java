@@ -6,7 +6,8 @@ public class Funcionario {
 	private String nome; 
     private String email;
     private int idade;
-    private int id_cargo; 
+    private int id_cargo;
+    private Cargo cargo;
 
     public int getId_func() {
         return id_func;
@@ -38,6 +39,14 @@ public class Funcionario {
     public void setIdade(int idade) {
         this.idade = idade;
     } 
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+    
 
     
 }

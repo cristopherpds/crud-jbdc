@@ -1,18 +1,15 @@
 import java.sql.SQLException;
 
+
 import javax.swing.JOptionPane;
 
-import dao.CargoDAO;
 import dao.FuncionarioDAO;
-import models.Cargo;
 import models.Funcionario;
 
 public class App {
     public static void main(String[] args) throws SQLException {
 
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        CargoDAO cargoDAO = new CargoDAO();
-
         int opcao = 0;
         do {
             String escolha = JOptionPane.showInputDialog(
@@ -109,24 +106,15 @@ public class App {
                     break;
                 case 4:
                     StringBuilder listaFuncionario = new StringBuilder();
-                    listaFuncionario.append("Lista de Funcionarios:\n\n");
                     for (Funcionario f : funcionarioDAO.findFuncionarios()) {
                         listaFuncionario.append("ID: ").append(f.getId_func()).append("\n");
                         listaFuncionario.append("Nome: ").append(f.getNome()).append("\n");
                         listaFuncionario.append("Email: ").append(f.getEmail()).append("\n");
-                        listaFuncionario.append("Idade: ").append(f.getIdade()).append("\n\n");
+                        listaFuncionario.append("Idade: ").append(f.getIdade()).append("\n");
+                        listaFuncionario.append("---------------------------------\n");
                     }
-
-                    StringBuilder listaCargo = new StringBuilder();
-                    listaCargo.append("Lista de Cargos e funcionarios:\n\n");
-                    for (Cargo c : cargoDAO.findCargosAndFuncionario()) {
-                        listaCargo.append("Nome funcionario: ").append(c.getNome()).append("\n");
-                        listaCargo.append("Email: ").append(c.getId_cargo()).append("\n");
-                        listaCargo.append("Nome: ").append(c.getNome()).append("\n\n");
-                    }
-                    JOptionPane.showMessageDialog(null, listaCargo.toString());
-
-                    JOptionPane.showMessageDialog(null, listaFuncionario.toString());
+                    JOptionPane.showMessageDialog(null, listaFuncionario.toString(), "Lista de Funcionarios",
+                            JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 5:
                     JOptionPane.showMessageDialog(null, "Encerrando o programa...");

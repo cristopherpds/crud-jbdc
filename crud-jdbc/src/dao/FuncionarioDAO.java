@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Factory.ConnectionFactory;
+import factory.ConnectionFactory;
 import models.Funcionario;
 
 public class FuncionarioDAO {
